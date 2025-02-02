@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+import potrace
+
+def image_to_svg(image_path, output_svg_path):
+    # Cargar la imagen
+    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    
+    # Convertir la imagen a binaria
+    _, binary_image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+    
+    # Crear un mapa de bits de la imagen binaria
+    bitmap = potrace.Bitmap(binary_image)
+    
+    # Convertir el mapa de bits a vectores (curvas)
+    path = bitmap.trace()
+    
+    # Guardar el archivo SVG
+    with open(output_svg_path, "w") as f:
+        path.write(f)
+
+# Llamada de ejemplo
+image_to_svg('imagen_de_entrada.png', 'salida.svg')
